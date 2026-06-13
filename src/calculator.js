@@ -14,6 +14,8 @@
  *   node src/calculator.js divide 10 2  # => 5
  */
 
+const calc = require('./lib/calculator');
+
 function parseNumber(value) {
   const n = Number(value);
   if (Number.isNaN(n)) {
@@ -34,38 +36,39 @@ const a = parseNumber(aStr);
 const b = parseNumber(bStr);
 let result;
 
-switch (operation.toLowerCase()) {
-  case 'add':
-  case '+':
-    result = a + b;
-    break;
+try {
+  switch (operation.toLowerCase()) {
+    case 'add':
+    case '+':
+      result = calc.add(a, b);
+      break;
 
-  case 'subtract':
-  case 'sub':
-  case '-':
-    result = a - b;
-    break;
+    case 'subtract':
+    case 'sub':
+    case '-':
+      result = calc.subtract(a, b);
+      break;
 
-  case 'multiply':
-  case 'mul':
-  case 'x':
-  case '*':
-    result = a * b;
-    break;
+    case 'multiply':
+    case 'mul':
+    case 'x':
+    case '*':
+      result = calc.multiply(a, b);
+      break;
 
-  case 'divide':
-  case 'div':
-  case '/':
-    if (b === 0) {
-      console.error('Error: division by zero');
+    case 'divide':
+    case 'div':
+    case '/':
+      result = calc.divide(a, b);
+      break;
+
+    default:
+      console.error(`Unknown operation: ${operation}`);
       process.exit(1);
-    }
-    result = a / b;
-    break;
-
-  default:
-    console.error(`Unknown operation: ${operation}`);
-    process.exit(1);
+  }
+} catch (err) {
+  console.error('Error:', err.message || err);
+  process.exit(1);
 }
 
 // Print result
